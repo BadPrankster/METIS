@@ -153,7 +153,6 @@ void loop() {
     unlock();
     interlock = "open";
     
-    Serial.println("Am I not here?");
     status == "Cutout";
     color = "#D61D23";
     alarm("red");
