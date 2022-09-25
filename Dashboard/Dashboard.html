@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="author" content="Lucas Wirz-Vitiuk">
+    <title>Dashboard</title>
+    <style>
+      html { 
+        font-family: Helvetica; 
+        font-weight: bold; 
+        text-align: center
+      }
+	  
+      iframe {
+        position: absolute;
+        top: 6%;
+        width: 47.25%;
+        height: 94%;
+        border: none;
+      }
+    </style>
+    <script src="jquery.js"></script>
+  </head>
+
+  <body>
+    <h1>METIS</h1>
+
+    <div>
+    <iframe name="left" style="left: 2.75%"></iframe>
+    <iframe name="right" style="left: 50%"></iframe>
+    </div>
+
+    <script>
+
+      function left_window() {
+        $.ajax({
+          url: 'http://10.3.141.201',
+            error:  function() {
+                console.log("left window: failed");
+                $('iframe[name="left"]').attr("src", "Athena_Offline.html");
+                setTimeout(function() {left_window()}, 5000);
+            },
+            success: function() {
+                console.log("left window: success");
+                $('iframe[name="left"]').attr("src", "http://10.3.141.201");
+                refresh_left_window();
+            },
+          timeout: 2500
+        });
+      }
+
+      function refresh_left_window() {
+        $.ajax({
+          url: 'http://10.3.141.201',
+            error:  function() {
+                console.log("left refresh: failed");
+                $('iframe[name="left"]').attr("src", "Athena_Offline.html");
+                setTimeout(function() {left_window()}, 5000);
+            },
+            success: function() {
+                console.log("left refresh: success");
+                setTimeout(function() {refresh_left_window()}, 5000);
+            },
+          timeout: 2500
+        });
+      }
+	
+      function right_window() {
+        $.ajax({
+          url: 'http://10.3.141.202',
+            error:  function() {
+                console.log("right window: failed");
+                $('iframe[name="right"]').attr("src", "Porus_Offline.html");
+                setTimeout(function() {right_window()}, 5000);
+            },
+            success: function() {
+                console.log("right window: success");
+                $('iframe[name="right"]').attr("src", "http://10.3.141.202");
+                setTimeout(function() {refresh_right_window()}, 15000);
+            },
+          timeout: 2500
+        });
+      }
+
+      function refresh_right_window() {
+        $.ajax({
+          url: 'http://10.3.141.202',
+            error:  function() {
+                console.log("right refresh: failed");
+                $('iframe[name="right"]').attr("src", "Porus_Offline.html");
+                setTimeout(function() {right_window()}, 5000);
+            },
+            success: function() {
+                console.log("right refresh: success");
+                setTimeout(function() {refresh_right_window()}, 5000);
+            },
+          timeout: 2500
+        });
+      }
+
+      $(document).ready( function() {
+        $('iframe[name="left"]').attr("src", "Athena_Offline.html");
+        $('iframe[name="right"]').attr("src", "Porus_Offline.html");
+        right_window();
+        left_window();
+      });
+
+    </script>
+
+  </body>
+</html>
